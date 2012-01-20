@@ -1,0 +1,25 @@
+{
+    "name"        : "tempest",
+    "version"     : "0.0.1",
+    "description" : "",
+    "author"      : "Mathieu Lecarme <mathieu@garambrogne.net>",
+    "dependencies": {
+        "redis":   ">=0.7",
+        "redis-protocol": ">=0.1"
+    },
+    "devDependencies": {
+        "nodeunit": ">=0.6"
+    },
+    "keywords"    : ["redis", "cluster"],
+    "repositories": [{
+        "type": "git",
+        "path": "git://github.com/athoune/node-tempest.git"
+    }],
+    "homepage"    : "http://github.com/athoune/node-tempest",
+    "bugs"        : "http://github.com/athoune/node-tempest/issues",
+    "licenses"    : [{ "type": "MIT"}],
+    "engine"      : "node",
+    "scripts"     : {
+        "test": "./node_modules/nodeunit/bin/nodeunit test/*"
+    }
+}
