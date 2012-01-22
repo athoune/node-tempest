@@ -19,7 +19,13 @@ Nodes can poll a common queue. It's a way to distribute works.
 
 Nodes listen a channel, each publication is handled by each listener.
 
+Examples
+--------
+
+The triangle folder in examples contains an http server with ruby
+(sequential ruby, no event machine here) and nodejs workers.
+
 Licence
 -------
 
-MIT.
+MIT.)
