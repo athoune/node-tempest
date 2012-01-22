@@ -25,7 +25,13 @@ Examples
 The triangle folder in examples contains an http server with ruby
 (sequential ruby, no event machine here) and nodejs workers.
 
+Clients
+-------
+
+ * Node
+ * [Ruby](https://github.com/athoune/ruby-tempest)
+
 Licence
 -------
 
-MIT.)
+MIT.
