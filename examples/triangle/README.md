@@ -63,3 +63,18 @@ In a second terminal:
 In a third terminal:
 
     siege -c 100 -t 30s http://localhost:1337
+
+### Try it with ruby
+
+The ruby worker use ruby 1.9.2 and the [tempestas](https://github.com/athoune/ruby-tempest) gem.
+
+Dependency
+
+    gem install tempestas
+
+Launch a worker
+
+    ruby worker.rb
+
+Use the node front and siege to see it in action.
+
