@@ -30,6 +30,7 @@ Clients
 
  * Node
  * [Ruby](https://github.com/athoune/ruby-tempest)
+ * [Python](https://github.com/athoune/py-tempest)
 
 Licence
 -------
