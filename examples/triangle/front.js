@@ -1,5 +1,5 @@
 var http = require('http'),
-    cluster_lib = require('../../lib/cluster');
+    cluster = require('../../lib/cluster');
 
 //front and dispatch computer
 
@@ -8,8 +8,13 @@ var http = require('http'),
 // cache job result
 // handle missed response.
 
-cluster_lib.createCluster(function() {
-    http.createServer(cluster_lib.http.work(this, 'tempest')).
-        listen(1337, '127.0.0.1');
+cluster.createCluster(function() {
+    http.createServer(
+        cluster.http.route(
+            ['info', function(req, res) {
+                res.end('info');
+            }],
+            ['*', cluster.http.work(this, 'tempest')]
+        )).listen(1337, '127.0.0.1');
 });
 
