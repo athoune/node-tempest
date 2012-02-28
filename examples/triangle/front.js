@@ -1,4 +1,5 @@
 var http = require('http'),
+    connect = require('connect'),
     cluster = require('../../lib/cluster');
 
 //front and dispatch computer
@@ -9,12 +10,9 @@ var http = require('http'),
 // handle missed response.
 
 cluster.createCluster(function() {
-    http.createServer(
-        cluster.http.route(
-            ['info', function(req, res) {
-                res.end('info');
-            }],
-            ['*', cluster.http.work(this, 'tempest')]
-        )).listen(1337, '127.0.0.1');
+    var app = connect().
+        use(connect.favicon()).
+        use(cluster.work(this, 'tempest'));
+    http.createServer(app).listen(1337);
 });
 
