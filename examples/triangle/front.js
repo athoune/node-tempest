@@ -12,6 +12,7 @@ var http = require('http'),
 cluster.createCluster(function() {
     var app = connect().
         use(connect.favicon()).
+        use('/sub', cluster.sub(this)).
         use(cluster.work(this, 'tempest'));
     http.createServer(app).listen(1337);
 });
