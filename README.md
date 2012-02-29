@@ -34,7 +34,7 @@ var http = require('http'),
 cluster.createCluster(function() {
     var app = connect(). // it's a Connect application
         use(connect.favicon()). // favicon is nice
-        use('/sub', cluster.sub(this)). // sub url for susbscring
+        use('/sub', cluster.sub(this)). // sub url for subscribing
         use(cluster.work(this, 'tempest')); // other url are handled by workers
     http.createServer(app).listen(1337);
 });
@@ -110,6 +110,8 @@ Features
  * √ Workers
  * √ EventSource subscribe
  * _ Unit tests
+ * _ Big picture
+ * _ Client side javascript example for EventSource
  * _ Standard session usable from worker, shared auth
  * _ Priority working queue
  * _ Worker raw answer (for streaming big data)
@@ -120,4 +122,4 @@ Features
 Licence
 -------
 
-MIT.
+MIT © 2012 Mathieu Lecarme.
