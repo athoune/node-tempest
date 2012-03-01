@@ -4,25 +4,49 @@ Tempest
 Prototype of a slow latency cluster mixing sequential and async technology.
 Every communication uses the redis protocol and a real Redis is the orchestrator.
 
-Communications
---------------
+Pattern for the web
+-------------------
 
-### One to one
+A front server accept and keep open http connection.
+It's async, it can handles lots of opened connection.
+The process wich handle the connection listen events, one or more, before closing the connection.
+The front can read and modify the session cookie.
 
-Each node is a server, a node can speak to a node, and even a process.
+### Working queue
 
-### Queue
+The process _rpush_ the query.
+It's a fire and forget, it got no direct answer.
+Redis keep a list of action with the id of the process.
+Some workers _blpop_ the Redis, and ask for works to do.
+Workers can directly speak to the process, with one or more answer.
+Workers can use sequential technology, even web technology with a little gateway between _rack_ ou _wsgi_ interface.
+You can mix technology and try horrible things like mixing go, dart and php workers.
+Choose a programing language wich handle redis communication.
 
-Nodes can poll a common queue. It's a way to distribute works.
+When you choose a sequential technology, try to work quickly, you are blocking the queue.
+
+![Workers](https://github.com/athoune/node-tempest/raw/master/worker.png)
 
 ### Pub/sub
 
-Nodes listen a channel, each publication is handled by each listener.
+The http front open a connection and start an _Event Source_ answer.
+It starts to _suscribe_ to a Redis channel and wait.
 
-Examples
---------
+Any event source can _publish_ to this channel.
+The message travels to the web client as an event source event.
 
-The triangle folder in examples contains some patterns.
+![Pubsub](https://github.com/athoune/node-tempest/raw/master/pubsub.png)
+
+### More complex
+
+Each node can directly speak to another node. You can route your answer, parralely or sequentialy, mixing technology.
+You can ask webservice with em-ruby and finaly answer with rails.
+
+
+Code
+----
+
+### Front
 
 The front is a _Connect_ 2 application :
 
@@ -64,7 +88,6 @@ cluster.worker.on('url', function(args, respond_to, job_id) {
 });
 
 cluster.work_loop();
-console.log('Worker is started', cluster.self());
 ```
 
 Test with _curl_, _ab_ or _siege_.
@@ -109,8 +132,9 @@ Features
 
  * √ Workers
  * √ EventSource subscribe
+ * √ Big picture
  * _ Unit tests
- * _ Big picture
+ * _ Session
  * _ Client side javascript example for EventSource
  * _ Standard session usable from worker, shared auth
  * _ Priority working queue
