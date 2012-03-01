@@ -4,11 +4,22 @@ Tempest
 Prototype of a slow latency cluster mixing sequential and async technology.
 Every communication uses the redis protocol and a real Redis is the orchestrator.
 
+Technology
+----------
+
+Every communication use connected redis communication. This connections can be multiplexed.
+Serialization is now JSON, but tnetstring or msgpack are more compact and more quick.
+It targets to mix sequential and async technology.
+It can be different language flavor (ruby and event machine, python and gevent)
+or completely different languages.
+
+It's a tribute to [mongrel2](http://mongrel2.org/), with redis protocol replacing zeromq.
+
 Pattern for the web
 -------------------
 
 A front server accept and keep open http connection.
-It's async, it can handles lots of opened connection.
+It's async, it can handles lots of opened connections.
 The process wich handle the connection listen events, one or more, before closing the connection.
 The front can read and modify the session cookie.
 
@@ -37,18 +48,21 @@ The message travels to the web client as an event source event.
 
 ![Pubsub](https://github.com/athoune/node-tempest/raw/master/pubsub.png)
 
-### More complex
+### More complex patterns
 
 Each node can directly speak to another node. You can route your answer, parralely or sequentialy, mixing technology.
 You can ask webservice with em-ruby and finaly answer with rails.
 
+File upload can be handled by the front, putting the file in the file system,
+or directly in a distributed server like [GridFS](http://www.mongodb.org/display/DOCS/GridFS+Specification),
+and passing a simple token to the web worker.
 
 Code
 ----
 
 ### Front
 
-The front is a _Connect_ 2 application :
+The front is a [Connect 2](https://github.com/senchalabs/connect) application :
 
 ```javascript
 var http = require('http'),
@@ -66,7 +80,7 @@ cluster.createCluster(function() {
 
 ### Worker
 
-Worker can be done with node, ruby, or with YOUR language.
+Worker can be made with node, ruby, or with YOUR language.
 
 You can launch many workers, they will rush to answer.
 
@@ -134,13 +148,13 @@ Features
  * √ EventSource subscribe
  * √ Big picture
  * _ Unit tests
- * _ Session
  * _ Client side javascript example for EventSource
  * _ Standard session usable from worker, shared auth
  * _ Priority working queue
  * _ Worker raw answer (for streaming big data)
  * _ WebSocket connection
  * _ More clients
+ * _ Process angels to handle crash
  * _ Erlang server with CowBoy
 
 Licence
